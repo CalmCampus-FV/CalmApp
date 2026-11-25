@@ -11,32 +11,6 @@ DerivedData/
 *.xcodeproj/
 *.xcworkspace/
 
-# Android / Kotlin (for the upcoming native Android app)
-.gradle/
-local.properties
-captures/
-*.iml
-.idea/
-
-# Old Flutter build caches (safe to delete; ignored so they're never committed)
-/build/
-/.dart_tool/
-.flutter-plugins-dependencies
-
 # Editors
 *.swp
 .history
-
-# ML workspace: environment, caches and model weights stay local (weights live on Hugging Face)
-ml/.venv/
-ml/.cache/
-ml/runs/
-
-# Python
-__pycache__/
-*.pyc
-
-# Web demo build output
-web/dist/
-web/node_modules/
-web/package-lock.json

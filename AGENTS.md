@@ -1,32 +1,38 @@
-# CalmCampus — Student Wellness App
+# CalmCampus iOS app (CalmApp)
 
-**Status (Sept 2026):** migrating from Flutter to native apps — SwiftUI on iOS first, then Kotlin/Compose on Android. The Flutter app was removed from `main`; it lives at git tag `flutter-final` and is the reference for UI, exercise content, and scoring logic (`git show flutter-final:lib/data/interventions_data.dart`).
+This repository is the native iOS app: SwiftUI + SwiftData, XcodeGen, in `ios/`. The website and university demo previews live in [CalmCampus-FV/CalmWeb](https://github.com/CalmCampus-FV/CalmWeb). The earlier monorepo is [CalmCampus-FV/CalmCampus](https://github.com/CalmCampus-FV/CalmCampus); it still contains a copy of `ios/` for now. Do not delete that copy from here. App changes belong in this repo.
 
 ## Layout
 
-- `ios/` — the real iOS app (SwiftUI + SwiftData, XcodeGen). First feature: the adaptive daily check-in (`CalmCampus/Checkin/`): wording in `QuestionBank`, rules in `CheckinPlanner` (pure, unit-tested), answers stored as flat versioned rows (`Data/CheckinResponse`).
-- `web/` — reviewer-preview PWA (vanilla JS, no runtime deps), one JSON config per university in `web/config/universities/`. `cd web && npm run check && npm test && npm run build`, then `npm run e2e` (Playwright end to end; set `E2E_URL` to check a live copy). See `web/README.md`. **Branches:** `main` holds the general preview (`default` config only). Each university has its own branch `<id>-web-demo`, made from `main`, that only adds its config, QR code, `test/<id>.test.mjs` and `web/HANDOFF.md`; make app changes on `main` and merge `main` into the university branches, never the other way. A university's preview is deployed from its branch by copying `web/dist/<id>/` into `docs/<id>/` of the `_CalmWeb` repo (never all of `dist/`); the general preview is deployed from `main` into `docs/demo/`, linked from the site's home page. A preview build (`"preview": true`) always shows example weeks and example phone data, labelled Example and kept under a separate storage key: the only place made-up data appears. Phone signals there only order the questions and add context; they never change the result.
-- `spike/` — throwaway iOS feasibility spike (what sensor data iOS actually gives us). See `spike/README.md`.
-- `ml/` — fine-tuned on-device reframing model (data, MLX training, eval, `MODEL_CARD.md`). See `ml/README.md`; weights live on Hugging Face ([CalmCampus](https://huggingface.co/CalmCampus)), not in git; `ml/publish_hf.py` publishes them. Downloading the public weights to run on the device is fine; sending user text to any inference API (including Hugging Face's) is not.
-- `design/mockups/` — HTML mockups of the app screens; `design/brand/` — app icon, palette.
+- `ios/` - the iOS app (SwiftUI + SwiftData, XcodeGen). Today it is a daily adaptive check-in (`CalmCampus/Checkin/`): wording in `QuestionBank`, rules in `CheckinPlanner` (pure, unit-tested), answers stored as flat versioned rows (`Data/CheckinResponse`). HealthKit sleep and step signals live under `Sensing/`.
+- `design/brand/` - app icon and colour palette.
+
+## Public v1 (in progress)
+
+The first public App Store / TestFlight version is a weekly check-in students can download themselves, not a university-branded preview and not the daily HealthKit product.
+
+- Four skippable yes/no questions about the past week, then a result screen, history, support and about.
+- Languages: English, French and Dutch. Default to the device language when it is one of those three.
+- Full disclaimer on every screen: we are students, not medical professionals; CalmCampus does not diagnose or treat; we strongly suggest a doctor or student support. Answers stay on the phone.
+- No accounts, no analytics, no tracking, no HealthKit in v1. Keep the existing daily / HealthKit code in the repo but out of the v1 UI (move it aside, do not delete it).
+- No detection or "early signs" claims, no claim the app finds burnout, and no claim it gets students to seek help.
+- User-facing copy: no em dashes, and keep the ù in Braùn.
 
 ## Commands
 
 ```bash
-cd ios && xcodegen generate && open -a Xcode CalmCampus.xcodeproj         # the app (needs full Xcode)
+cd ios && xcodegen generate && open -a Xcode CalmCampus.xcodeproj
 xcodebuild test -project ios/CalmCampus.xcodeproj -scheme CalmCampus \
-  -destination 'platform=iOS Simulator,name=CC Test iPhone'             # unit tests
-cd spike && xcodegen generate && open -a Xcode CalmCampusSpike.xcodeproj
-# compile check without signing:
-xcodebuild -project spike/CalmCampusSpike.xcodeproj -scheme CalmCampusSpike \
-  -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
+  -destination 'platform=iOS Simulator,name=CC Test iPhone'
 ```
 
-`.xcodeproj` files are generated from `project.yml` (XcodeGen) and gitignored — edit `project.yml`, not the project.
+`.xcodeproj` files are generated from `project.yml` (XcodeGen) and gitignored. Edit `project.yml`, not the project.
+
+CI (`.github/workflows/ci.yml`) runs the iOS unit tests on `macos-15` with `CODE_SIGNING_ALLOWED=NO`.
 
 ## Principles
 
-- **All data stays on-device.** No cloud AI or analytics. On-device AI only (Apple Foundation Models / Gemini Nano). The Flutter version sent user text to Groq — do not reintroduce that.
-- **No synthetic data in the product.** Every signal is real, missing, or unavailable; never fabricated. Only exception: the labelled examples in the web reviewer preview.
-- **Check-in questions:** never change a question `id`; bump `version` when wording/options change. No clinical screeners (PHQ/GAD, scored cutoffs) or self-harm items. Keep the burden budget (3 core + sleep fallback + ≤2 extra), every question skippable.
-- **Wellness wording, not medical claims** ("supports", not "detects burnout") — EU MDR risk.
+- **All data stays on-device.** No cloud AI or analytics. On-device AI only (Apple Foundation Models / Gemini Nano), and not in public v1. The old Flutter version sent user text to Groq: do not reintroduce that.
+- **No synthetic data in the product.** Every signal is real, missing, or unavailable; never fabricated. Labelled examples belong only to the web reviewer previews in CalmWeb.
+- **Check-in questions:** never change a question `id`; bump `version` when wording or options change. No clinical screeners (PHQ/GAD, scored cutoffs) or self-harm items. Every question is skippable.
+- **Wellness wording, not medical claims** ("supports", not "detects burnout") - EU MDR risk, and Apple guideline 1.4.1.
