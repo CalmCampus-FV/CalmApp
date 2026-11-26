@@ -4,10 +4,12 @@ This repository is the native iOS app: SwiftUI + SwiftData, XcodeGen, in `ios/`.
 
 ## Layout
 
-- `ios/` - the iOS app (SwiftUI + SwiftData, XcodeGen). Today it is a daily adaptive check-in (`CalmCampus/Checkin/`): wording in `QuestionBank`, rules in `CheckinPlanner` (pure, unit-tested), answers stored as flat versioned rows (`Data/CheckinResponse`). HealthKit sleep and step signals live under `Sensing/`.
+- `ios/` - the iOS app (SwiftUI + SwiftData, XcodeGen).
+  - `CalmCampus/` is the public v1 weekly check-in: `Weekly/` (questions, scoring, language, pure and unit-tested), `Data/WeeklyAnswer` (one row per question per week), `Localization/Strings.swift` (all copy in en/fr/nl), `Support/` (institution and emergency data from the Quivr config), `Reminder/` (local weekly notification), `Views/`.
+  - `Legacy/` holds the earlier daily adaptive check-in and HealthKit sleep and step code. It is not in the app target. The pure planner (`Legacy/Daily/Checkin`, minus the view) and its tests still compile into the test target so they stay green. HealthKit entitlements live in `Legacy/Daily/CalmCampus.entitlements`; restore them only when the daily product ships.
 - `design/brand/` - app icon and colour palette.
 
-## Public v1 (in progress)
+## Public v1 (implemented in `ios/CalmCampus`)
 
 The first public App Store / TestFlight version is a weekly check-in students can download themselves, not a university-branded preview and not the daily HealthKit product.
 
@@ -16,7 +18,8 @@ The first public App Store / TestFlight version is a weekly check-in students ca
 - Full disclaimer on every screen: we are students, not medical professionals; CalmCampus does not diagnose or treat; we strongly suggest a doctor or student support. Answers stay on the phone.
 - No accounts, no analytics, no tracking, no HealthKit in v1. Keep the existing daily / HealthKit code in the repo but out of the v1 UI (move it aside, do not delete it).
 - No detection or "early signs" claims, no claim the app finds burnout, and no claim it gets students to seek help.
-- User-facing copy: no em dashes, and keep the ù in Braùn.
+- User-facing copy: no em dashes, and keep the ù in Braùn. `WordingTests` enforces the banned words (detect, diagnosis, early signs, burnout, time in seconds) across all three languages; add new copy to `Strings.swift` so it is checked.
+- Scoring counts yes answers only (0 steady, 1 notice, 2 support, 3+ care). Never show a count like "3 of 4".
 
 ## Commands
 

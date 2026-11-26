@@ -20,8 +20,6 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>CalmCampus reads your sleep and steps to ask better check-in questions. This data never leaves your iPhone.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiresFullScreen</key>

@@ -3,10 +3,14 @@ import SwiftUI
 
 @main
 struct CalmCampusApp: App {
+    @State private var settings = AppSettings()
+
     var body: some Scene {
         WindowGroup {
-            HomeView(health: HealthKitSignals())
+            RootView()
+                .environment(settings)
+                .environment(\.locale, settings.language.locale)
         }
-        .modelContainer(for: CheckinResponse.self)
+        .modelContainer(for: WeeklyAnswer.self)
     }
 }
