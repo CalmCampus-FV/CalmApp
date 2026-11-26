@@ -47,6 +47,8 @@ targets:
       - path: Legacy/Daily/Checkin
         excludes:
           - CheckinView.swift
+      # Foundation-only value type used by the planner tests. Not HealthSignals.swift (HealthKit).
+      - path: Legacy/Daily/Sensing/SleepSegment.swift
     dependencies:
       - target: CalmCampus
     settings:

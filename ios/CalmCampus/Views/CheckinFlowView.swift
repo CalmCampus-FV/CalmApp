@@ -33,6 +33,7 @@ struct CheckinFlowView: View {
         }
         .padding()
         .id(question.id)
+        .disclaimerFooter()
     }
 
     private func answerButton(_ response: WeeklyResponse, _ question: WeeklyQuestion) -> some View {

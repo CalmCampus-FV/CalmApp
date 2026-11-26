@@ -40,6 +40,7 @@ struct ResultView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         }
+        .disclaimerFooter()
         .navigationTitle(settings.text(.resultKicker))
         .navigationBarTitleDisplayMode(.inline)
     }
