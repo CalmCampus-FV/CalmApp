@@ -29,21 +29,26 @@ targets:
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIRequiresFullScreen: true
-        NSHealthShareUsageDescription: CalmCampus reads your sleep and steps to ask better check-in questions. This data never leaves your iPhone.
-    entitlements:
-      path: Config/CalmCampus.entitlements
-      properties:
-        com.apple.developer.healthkit: true
-        com.apple.developer.healthkit.access: []
+    # Public v1 has no HealthKit: no entitlements file and no NSHealthShareUsageDescription.
+    # The daily / HealthKit code lives in Legacy/ and is not part of this target.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: co.lumenworks.calmcampus
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
   CalmCampusTests:
     type: bundle.unit-test
     platform: iOS
     sources:
       - CalmCampusTests
+      # The old daily planner and its tests keep running here. Pure Foundation code only;
+      # the daily UI, SwiftData model and HealthKit code stay out of every target.
+      - path: Legacy/DailyTests
+      - path: Legacy/Daily/Checkin
+        excludes:
+          - CheckinView.swift
+      # Foundation-only value type used by the planner tests. Not HealthSignals.swift (HealthKit).
+      - path: Legacy/Daily/Sensing/SleepSegment.swift
     dependencies:
       - target: CalmCampus
     settings:
