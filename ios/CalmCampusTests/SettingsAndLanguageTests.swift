@@ -54,11 +54,14 @@ final class SettingsAndLanguageTests: XCTestCase {
 
     func testCheckinWorksWithoutInstitution() {
         XCTAssertNil(SupportData.institution(id: nil))
-        XCTAssertNil(SupportData.institution(id: "other"))
+        let other = SupportData.institution(id: "other")
+        XCTAssertNotNil(other)
+        XCTAssertNotNil(other?.advice)
+        XCTAssertTrue(other?.services.isEmpty ?? false)
     }
 
     func testInstitutionsAndNationalLines() {
-        XCTAssertEqual(SupportData.institutions.map(\.id), ["kuleuven", "kulak", "ugent", "uantwerpen", "vub", "uhasselt"])
+        XCTAssertEqual(SupportData.institutions.map(\.id), ["kuleuven", "kulak", "ugent", "uantwerpen", "vub", "uhasselt", "other"])
         XCTAssertEqual(SupportData.nationalLines.map(\.number), ["112", "1813", "106", "107", "0800 32 123"])
         for institution in SupportData.institutions {
             for service in institution.serviceForLevel.values {
