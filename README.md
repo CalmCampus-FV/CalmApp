@@ -15,7 +15,7 @@ CalmCampus is a short check-in that helps students pause and find existing stude
 
 This repository holds the native iOS app (SwiftUI + SwiftData, iOS 17+). The current code is a daily adaptive check-in with optional HealthKit sleep and step signals, used only to order follow-up questions. The first public version, for TestFlight and later the App Store, will be a weekly check-in of four questions, in English, French and Dutch, with no HealthKit, no accounts and no analytics.
 
-The website and university demo previews live in [CalmCampus-FV/CalmWeb](https://github.com/CalmCampus-FV/CalmWeb).
+The website lives in [CalmCampus-FV/CalmWeb](https://github.com/CalmCampus-FV/CalmWeb), university demos in [CalmCampus-FV/CalmUni](https://github.com/CalmCampus-FV/CalmUni), company demos in [CalmCampus-FV/CalmBiz](https://github.com/CalmCampus-FV/CalmBiz), and the research and design archive in [CalmCampus-FV/CalmCampus](https://github.com/CalmCampus-FV/CalmCampus).
 
 ## Getting started
 
@@ -41,4 +41,4 @@ xcodebuild test -project ios/CalmCampus.xcodeproj -scheme CalmCampus \
 
 ## License
 
-[MIT](LICENSE) © 2026 Florian Braun, Helene David.
+[MIT](LICENSE) © 2026 Florian Braùn, Hélène David.

@@ -1,6 +1,6 @@
 # CalmCampus iOS app (CalmApp)
 
-This repository is the native iOS app: SwiftUI + SwiftData, XcodeGen, in `ios/`. The website and university demo previews live in [CalmCampus-FV/CalmWeb](https://github.com/CalmCampus-FV/CalmWeb). The earlier monorepo is [CalmCampus-FV/CalmCampus](https://github.com/CalmCampus-FV/CalmCampus); it still contains a copy of `ios/` for now. Do not delete that copy from here. App changes belong in this repo.
+This repository is the native iOS app: SwiftUI + SwiftData, XcodeGen, in `ios/`. The website lives in [CalmCampus-FV/CalmWeb](https://github.com/CalmCampus-FV/CalmWeb), university demos and the reviewer preview web app in [CalmCampus-FV/CalmUni](https://github.com/CalmCampus-FV/CalmUni), company demos in [CalmCampus-FV/CalmBiz](https://github.com/CalmCampus-FV/CalmBiz). The earlier monorepo [CalmCampus-FV/CalmCampus](https://github.com/CalmCampus-FV/CalmCampus) is now the research and design archive; its old copy of `ios/` was removed (it stays in that repo's history). App changes belong in this repo.
 
 ## Layout
 
@@ -36,6 +36,6 @@ CI (`.github/workflows/ci.yml`) runs the iOS unit tests on `macos-15` with `CODE
 ## Principles
 
 - **All data stays on-device.** No cloud AI or analytics. On-device AI only (Apple Foundation Models / Gemini Nano), and not in public v1. The old Flutter version sent user text to Groq: do not reintroduce that.
-- **No synthetic data in the product.** Every signal is real, missing, or unavailable; never fabricated. Labelled examples belong only to the web reviewer previews in CalmWeb.
+- **No synthetic data in the product.** Every signal is real, missing, or unavailable; never fabricated. Labelled examples belong only to the web reviewer previews in CalmUni.
 - **Check-in questions:** never change a question `id`; bump `version` when wording or options change. No clinical screeners (PHQ/GAD, scored cutoffs) or self-harm items. Every question is skippable.
 - **Wellness wording, not medical claims** ("supports", not "detects burnout") - EU MDR risk, and Apple guideline 1.4.1.
